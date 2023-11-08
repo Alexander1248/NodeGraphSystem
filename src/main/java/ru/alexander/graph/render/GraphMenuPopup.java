@@ -8,12 +8,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class MenuPopup extends JPopupMenu {
+public class GraphMenuPopup extends JPopupMenu {
     public static final ArrayList<PopupTreeItem> tree = new ArrayList<>();
     private final GraphDrawer drawer;
 
     public double x, y;
-    public MenuPopup(GraphDrawer drawer) {
+    public GraphMenuPopup(GraphDrawer drawer) {
         this.drawer = drawer;
         JMenu addNode = new JMenu("Add Node...");
 

@@ -48,7 +48,7 @@ public class GraphDrawer extends JPanel {
                     double nx2 = input.node().getPinX(index) + input.node().x - x;
                     double ny2 = input.node().getPinY(index) + input.node().y - y;
 
-                    drawCurve(g, nx2, nx1, ny1, ny2);
+                    drawCurve(g, nx1, nx2, ny1, ny2);
                 }
             }
 
@@ -69,8 +69,8 @@ public class GraphDrawer extends JPanel {
     }
 
 
-    private static void drawCurve(Graphics g, double nx2, double nx1, double ny1, double ny2) {
-        double half = (nx2 - nx1) * 0.5;
+    private static void drawCurve(Graphics g, double nx1, double nx2, double ny1, double ny2) {
+        double half = -Math.abs(nx2 - nx1) * 0.5;
 
         double p1x = nx1 + half;
 
@@ -119,7 +119,7 @@ public class GraphDrawer extends JPanel {
             double py = drawer.y + e.getY();
 
             if (e.getButton() == MouseEvent.BUTTON3) {
-                MenuPopup menu = new MenuPopup(drawer);
+                GraphMenuPopup menu = new GraphMenuPopup(drawer);
                 menu.x = px;
                 menu.y = py;
 
@@ -222,7 +222,7 @@ public class GraphDrawer extends JPanel {
             double nx = node.getPinX(pin) + node.x - drawer.x;
             double ny = node.getPinY(pin) + node.y - drawer.y;
 
-            drawCurve(g, prevX, nx, ny, prevY);
+            drawCurve(g, prevX, nx, prevY, ny);
         }
     }
 }
