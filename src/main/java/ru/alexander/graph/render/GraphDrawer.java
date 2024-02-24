@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.QuadCurve2D;
 
 public class GraphDrawer extends JPanel {
     private Graph graph = null;
@@ -48,7 +50,7 @@ public class GraphDrawer extends JPanel {
                     double nx2 = input.node().getPinX(index) + input.node().x - x;
                     double ny2 = input.node().getPinY(index) + input.node().y - y;
 
-                    drawCurve(g, nx1, nx2, ny1, ny2);
+                    drawCurve(g2d, nx1, nx2, ny1, ny2);
                 }
             }
 
@@ -69,31 +71,16 @@ public class GraphDrawer extends JPanel {
     }
 
 
-    private static void drawCurve(Graphics g, double nx1, double nx2, double ny1, double ny2) {
+    private static void drawCurve(Graphics2D g, double nx1, double nx2, double ny1, double ny2) {
         double half = -Math.abs(nx2 - nx1) * 0.5;
-
-        double p1x = nx1 + half;
-
-        double p2x = nx2 - half;
-
-        double px = nx1;
-        double py = ny1;
-        for (double t = 0.05; t <= 1.01; t += 0.05) {
-            double t2 = t * t;
-            double t3 = t2 * t;
-
-            double nt = 1 - t;
-            double nt2 = nt * nt;
-            double nt3 = nt2 * nt;
-
-            double x = nt3 * nx1 + 3 * t * nt2 * p1x + 3 * t2 * nt * p2x + t3 * nx2;
-            double y = nt3 * ny1 + 3 * t * nt2 * ny1 + 3 * t2 * nt * ny2 + t3 * ny2;
-
-            g.drawLine((int) px, (int) py, (int) x, (int) y);
-
-            px = x;
-            py = y;
-        }
+        CubicCurve2D q = new CubicCurve2D.Float();
+        q.setCurve(
+                nx1, ny1,
+                nx1 + half, ny1,
+                nx2 - half, ny2,
+                nx2, ny2
+        );
+        g.draw(q);
     }
     private static class GraphMouseAdapter extends MouseAdapter {
         private final GraphDrawer drawer;
